@@ -1,0 +1,16 @@
+div.news-detail img.detail_picture
+{
+	/*float:left;*/
+	margin:0 8px 6px 1px;
+}
+.news-date-time:before {
+content: "\f017";
+margin-right:6px;
+display: inline;
+speak: none;
+width:auto;
+height:auto;
+font-family:FontAwesome;
+font-size:14px;
+}
+.news-detail { margin: 0 0 10px 10px; }

@@ -1,0 +1,23 @@
+0 -> pipe:[401337423]
+1 -> pipe:[401337424]
+2 -> pipe:[401385628]
+3 -> /home/r/ravilays/gipfel.ru/public_html/index.php (deleted)
+4 -> pipe:[401385627]
+5 -> pipe:[401385627]
+6 -> /usr/share/GeoIP/GeoIP.dat
+7 -> pipe:[401385629]
+8 -> /var/log/apache2/access.log
+9 -> /proc/7/auxv
+10 -> /tmp/.ZendSem.NzSXfL (deleted)
+11 -> /usr/share/GeoIP/GeoLiteCity.dat
+12 -> anon_inode:[eventpoll]
+13 -> socket:[437185990]
+14 -> socket:[437115460]
+15 -> socket:[437115461]
+16 -> socket:[437076703]
+17 -> /home/r/ravilays/gipfel.ru/public_html/upload/iblock/2a8/2a83b133f1a8e8ca10e2b4171f4d71e1.jpg
+Socket: 437185990 L:127.70.0.1:80 R:127.0.0.1:37822
+Socket: 437115460 L:127.0.0.1:11728 R:127.0.0.1:11211
+Socket: 437115461 L:127.0.0.1:12436 R:127.0.0.1:6379
+Socket: 437076703 L:0.0.0.0:0 R:0.0.0.0:0
+strace -- version 4.5.20

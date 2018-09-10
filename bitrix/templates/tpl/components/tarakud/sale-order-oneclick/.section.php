@@ -1,0 +1,3 @@
+<?
+$sSectionName="sale.order.oneclick";
+?>

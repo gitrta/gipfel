@@ -1,0 +1,18 @@
+.ribbons{
+    position: absolute;
+    top: 1px;
+    right:1px;
+    width: 75px;
+    height:75px;
+    z-index: 50;
+}
+
+
+.skidka {
+    background: rgba(0, 0, 0, 0) url("/bitrix/templates/tpl/images/new_66x66.png") no-repeat scroll 0 0;
+    display: block;
+    height: 66px;
+    margin-left: 9px;
+    margin-top: -3px;
+    width: 66px;
+}

@@ -1,0 +1,1 @@
+<img width="220" alt="companypic.png" src="https://gipfel.ru/gip.png" height="220" title="companypic.png">

@@ -1,0 +1,31 @@
+<?
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
+?>
+<?if(count($arResult['ITEMS'])):?>
+                    <div class="catalog_left_block">
+                        <div class="catalog_left_block_title">
+                            сейчас смотрят
+                        </div>
+                        <div class="catalog_left_block_content">
+                            <ul class="catalog_left_products">
+	<?foreach($arResult['ITEMS'] as $arItem):?>
+                                <li>
+                                    <a href="<?=$arItem['DETAIL_PAGE_URL']?>">
+                                        <div class="catalog_left_products_image">
+                                            <img style="background:url(<?=$arItem['DETAIL_PICTURE']['SRC']?>) no-repeat center; background-size:contain;" src="/bitrix/images/1.gif" alt="">
+                                        </div>
+                                        <div class="catalog_left_products_info">
+                                            <div class="catalog_left_products_title">
+                                                <?=$arItem['NAME']?>
+                                            </div>
+                                            <div class="catalog_left_products_price">
+                                                <?=$arItem['CATALOG_PRICE_1']?> <span>руб</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>	
+	<?endforeach?>
+                            </ul>
+                        </div>                       
+                    </div>							
+<?endif?>

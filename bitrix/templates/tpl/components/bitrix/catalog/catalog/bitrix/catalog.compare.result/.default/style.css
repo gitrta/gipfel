@@ -1,0 +1,60 @@
+.compare-left { float:left; width:261px; padding-left:8px;  margin-top:12px; }
+.compare-right { width:731px; overflow:hidden; padding-top:12px; margin-top:-12px;}
+.filter_content label { display:block; }
+.compare-left .filter_content { padding:4px 0 0 0; }
+.compare-right .product_buy {
+	font-size: 12px;
+	padding: 7px 34px 3px 14px;
+	margin-bottom: 12px;
+	float:right;
+	margin-right:24px;
+}
+.td-price { height:73px; overflow:hidden; }
+.compare-right .product_buy:after {
+background-position: -40px -23px;
+width: 21px;
+height: 17px;
+top: 6px;
+right: 8px;
+}
+.compare-right .product_price { font-size:24px; white-space:nowrap; display:inline-block; overflow:hidden;  }
+.compare-right .product_price span { font-size: 18px; margin-left:0; }
+.compare-name { 
+	text-decoration:none;color:#000;text-transform:uppercase; 
+	height:55px; overflow:hidden; display:block;
+}
+.compare-value { width:244px; overflow:hidden; white-space:nowrap; }
+.cell-top { height:191px; }
+.compare-table {}
+.compare-table td {  }
+.compare-features .compare-table { width:100%; }
+.compare-table tbody tr:nth-child(even), 
+.compare-features .compare-table tbody tr:nth-child(odd){ background:#eee; }
+.compare-features .compare-table tbody tr:nth-child(even){ background:#fff; }
+.compare-table .feature { padding:5px 0; }
+.compare-table th { text-align:left; }
+.compare-features .compare-table th { padding-left:10px; }
+.table-cell-title { padding:5px 0 5px 10px; }
+.wrap-DETAIL_PICTURE { position:relative; }
+.delete-compare {
+	position: absolute;
+	right: -12px;
+	top: -12px;
+	z-index: 100;
+	display: inline-block;
+	background: #ccc;
+	width: 24px;
+	height: 24px;
+	border-radius: 24px;
+	cursor:pointer;
+}
+.delete-compare input { visibility:hidden; width:0;height:0; } 
+.delete-compare:after {
+	content: ' ';
+	display:inline-block;
+	width:12px; height:12px;
+	background: url(/bitrix/templates/tpl/images/icons/icons.png) no-repeat -75px -47px;
+	margin: 5px 0 0 6px;
+}
+.wrap-td {  }
+.wrap-td.wrap-NAME { height:34px; overflow:hidden; }

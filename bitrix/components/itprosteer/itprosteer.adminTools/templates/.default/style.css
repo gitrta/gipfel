@@ -1,0 +1,8 @@
+.ITPR_newpost{
+    width:100px;
+    height: 100px;
+    border:1px solid red;
+    position: fixed;
+    top:200px;
+    left:0;
+}

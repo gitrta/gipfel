@@ -1,0 +1,24 @@
+<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
+
+<?
+ // echo "<pre>"; print_r($arResult); echo "</pre>";
+?>
+
+                    <div class="catalog_left_block">
+                        <div class="catalog_left_block_title">
+                            Сейчас на сайте
+                        </div>
+                        <div class="catalog_left_block_content">
+                            <div class="catalog_left_block_content_online">
+                                Сейчас на сайте <strong><?=count($arResult["USERS_AUTH"]);?></strong> пользователей <br/>и <strong><?=count($arResult["USERS"]);?></strong> гостя
+                            </div>
+                            <div class="filter_title">Пользователи на сайте</div>
+                            <?if($arResult["USERS_AUTH"]):?><div class="filter_content">
+                                <ul class="users_online">
+								<?foreach($arResult["USERS_AUTH"] as $v):$cnt++;if ($cnt>10) break;?>
+                                    <li><?print_r($v)?></li>
+								<?endforeach?>
+                                </ul>
+                            </div> <?endif?>
+                        </div>                        
+                    </div>

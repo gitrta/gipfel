@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="refresh" content="10;URL=/ciez2a">
+</head>
+<body>
+  <script type="text/javascript">
+    var ipp = {
+	setCookie:function()
+	{
+		document.cookie="ipp_key=1510160948152/aMOgXtVSh64BtufR8zoccQ==; path=/;";
+		document.cookie="ipp_uid1=1510160948152; expires=Tue, 31 Dec 2030 23:59:59 GMT; path=/;";
+		document.cookie="ipp_uid2=PhZrVZa57BIVaNrj/C6nbVQ32A8pFK24dyuv8GQ==; expires=Tue, 31 Dec 2030 23:59:59 GMT; path=/;";
+	},
+	makeUrl:function(url)
+	{
+		url += "fa821dba_ipp_key=1510160948152%2faMOgXtVSh64BtufR8zoccQ%3d%3d" + "&" + "fa821dba_ipp_uid1=1510160948152" + "&" + "fa821dba_ipp_uid2=PhZrVZa57BIVaNrj%2fC6nbVQ32A8pFK24dyuv8GQ%3d%3d";
+		return url;
+	}
+};
+
+
+    location.href=ipp.makeUrl("https://www.cdek.ru/ajax.php?JsHttpRequest=0-xml&Action=GetTarifList&orderType=1&FromCity=44&ToCity=4961&Package[0][weight]=0.5&Package[0][length]=&Package[0][width]=&Package[0][height]=&Package[0][description]=&idInterface=3&utm_referrer=&");
+  </script>
+</body>
+</html>
+

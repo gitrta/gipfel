@@ -1,0 +1,263 @@
+<?
+include_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/php_interface/constants.php');
+
+$curDir = $APPLICATION->GetCurDir();
+$arDirs = array_diff(explode('/', $curDir), array(''));
+
+$isIndex = $APPLICATION->GetCurPage(false) == SITE_DIR;
+$isConfirm = $arDirs[1] == 'personal' && $arDirs[2] == 'order' && $arDirs[3] == 'make' && isset($_GET['ORDER_ID']);
+
+
+function plural_form($n, $forms) {
+  return $n%10==1&&$n%100!=11?$forms[0]:($n%10>=2&&$n%10<=4&&($n%100<10||$n%100>=20)?$forms[1]:$forms[2]);
+}
+
+AddEventHandler("iblock", "OnAfterIBlockElementSetPropertyValues", Array("theGift", "fixGift"));
+AddEventHandler("sale", "OnOrderAdd", Array(/*"theGift",*/ "OnOrderAdd"));
+
+class theGift {
+	function fixGift($ID, $ib, $values, $code) {
+		$val = $values['GIFT'];
+		if (!$val) return;
+		CModule::IncludeModule('iblock');
+		$arSelect = Array("ID", "NAME", "PROPERTY_GIFT");
+		$arFilter = Array("IBLOCK_ID"=>$ib, "PROPERTY_GIFT"=>$val);
+		$res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+		while($ob = $res->GetNextElement())
+		{
+			$arFields = $ob->GetFields();
+			$ELEMENT_ID = $arFields['ID'];  
+			$PROPERTY_CODE = "GIFT";  
+			$PROPERTY_VALUE = "";
+			CIBlockElement::SetPropertyValuesEx($ELEMENT_ID, false, array($PROPERTY_CODE => $PROPERTY_VALUE));
+		}
+	}
+
+	function OnOrderAdd($ORDER_ID, $arFields, $arParams) {
+		
+		CModule::IncludeModule('sale');
+		CModule::IncludeModule('iblock');
+		$p = $arFields['PRICE'];
+		if ($p<5000) $val = 17;
+		elseif ($p<10000) $val = 18;
+		elseif ($p<15000) $val = 19;
+		else $val = 20;
+		$arSelect = Array("ID", "NAME", "PROPERTY_GIFT","DETAIL_PAGE_URL");
+		$arFilter = Array("IBLOCK_ID"=>2, "PROPERTY_GIFT"=>$val);
+		$res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+		if ($ob = $res->GetNextElement()) {
+			$arFields = $ob->GetFields();
+			$ID = $arFields['ID'];
+			/*****************************/
+			$arFields = array(
+			    "PRODUCT_ID" => $ID,
+			    "PRODUCT_PRICE_ID" => 0,
+			    "PRICE" => 0,
+			    "CURRENCY" => "RUB",
+			    "QUANTITY" => 1,
+			    //"ORDER_ID" => $ORDER_ID,
+			    "LID" => SITE_ID,
+			    "DELAY" => "N",
+			    "CAN_BUY" => "Y",
+			    "NAME" => $arFields['NAME'],
+			    "DETAIL_PAGE_URL" => $arFields['DETAIL_PAGE_URL'],
+			    "PRODUCT_PROVIDER_CLASS" => ""
+			  );
+			
+			  $arProps = array();
+			
+			  $arFields["PROPS"] = $arProps;
+			
+			  $new = CSaleBasket::Add($arFields);
+if (!$new) die("some went wrong");
+			/*****************************/
+		}
+	}
+}
+
+
+// все данные о заказе, включая значения свойств и список позиций
+function getOrderVars($ORDER_ID) {
+
+	CModule::IncludeModule("sale");
+	CModule::IncludeModule("iblock");
+	/////////////////////////////////////////////////
+	// товары
+	$arID = array();
+	$arBasketItems = array();
+	
+	$dbBasketItems = CSaleBasket::GetList(
+	     array(
+			"NAME" => "ASC",
+			"ID" => "ASC"
+		),
+		array(
+	
+			"ORDER_ID" => $ORDER_ID
+		),
+		false,
+		false,
+		array()
+	);
+	
+	
+	while ($arItems = $dbBasketItems->Fetch())
+	{
+
+		$tmp = explode("#",$arItems['PRODUCT_XML_ID']);
+		if ($tmp[1]) {  $arItems['PARENT_XML_ID'] = $tmp[0]; $arItems['PRODUCT_XML_ID'] = $tmp[1];  }
+		$intElementID = $arItems['PRODUCT_ID']; // ID предложения
+
+
+		if (!$arItems['PRODUCT_XML_ID']) {
+			$res = CIBlockElement::GetByID($intElementID);
+			if($ar_res = $res->GetNext())
+			  $arItems['PRODUCT_XML_ID'] = $ar_res['XML_ID'];	
+		}
+
+
+		// данные о основном товаре
+	
+		$res = CIBlockElement::GetByID($intElementID);
+		$arProduct = $res->GetNext();
+	
+	
+		$arFilter = Array("IBLOCK_ID"=>$arProduct['IBLOCK_ID'], "ID"=>$intElementID);
+		$res = CIBlockElement::GetList(Array(), $arFilter, false,false,
+		array("ID","IBLOCK_ID","NAME","PREVIEW_PICTURE","DETAIL_PICTURE","DETAIL_PAGE_URL"));
+		while($ob = $res->GetNextElement())
+		{
+		  $arProduct= $ob->GetFields();
+		}
+	
+		$arItems['PRODUCT'] = $arProduct;
+	
+	
+		$db_res = CSaleBasket::GetPropsList(
+		        array(
+		                "SORT" => "ASC",
+		                "NAME" => "ASC"
+		            ),
+		        array("BASKET_ID" => $arItems['ID'])
+		    );
+		while ($ar_res = $db_res->Fetch())
+		{
+		   $arItems['PROP'][] = $ar_res;
+		}
+
+	    	$arBasketItems[] = $arItems;
+		$modif = "";
+		foreach ($arItems['PROP'] as $v) {
+			$val = $v['VALUE'];
+		}
+		$PRODUCTS[] = $arItems;
+		$products.=''.$arItems['NAME'].' x '.$arItems['QUANTITY'].' ('.$arItems['PRICE'].')	'.($modif?'['.$modif.'] ':'').'
+';
+	}
+	//echo ($products); exit;
+	/////////////////////////////////////////////////
+	$result = CSaleOrder::GetByID($ORDER_ID);
+	$result['PRODUCTS'] = $PRODUCTS;
+	$result['ORDER_LIST'] = $products;
+	$result['SALE_EMAIL'] = COption::GetOptionString('sale','order_email');
+	
+	$result['ORDER_DATE'] = $result['DATE_INSERT_FORMAT'];
+	
+	if ($arPaySys = CSalePaySystem::GetByID($result['PAY_SYSTEM_ID'], $result['PERSON_TYPE_ID']))
+	{
+	   $result['PAY_SYSTEM'] = $arPaySys["PSA_NAME"];
+	}
+	
+	$db_vars = CSaleOrderPropsVariant::GetList(
+	     array("SORT" => "ASC")
+	);
+	while ($vars = $db_vars->Fetch())
+	{
+	     $arVariants[$vars['ORDER_PROPS_ID']][$vars['VALUE']] = $vars['NAME'];
+	}
+	
+	$arDeliv = CSaleDelivery::GetByID($result['DELIVERY_ID']);
+	if ($arDeliv)
+	{
+		$result['ALL_DELIVERY'] = $arDeliv;
+	   $result['DELIVERY'] =  "\"".$arDeliv["NAME"]."\" стоит ".CurrencyFormat($arDeliv["PRICE"], $arDeliv["CURRENCY"]);
+	}
+	$tmp = explode(":",$result['DELIVERY_ID']);
+	$dbResult = CSaleDeliveryHandler::GetBySID($tmp[0]);
+	
+	if ($arResult = $dbResult->GetNext())
+	{
+	  foreach ($arResult['PROFILES'] as $profile_id => $arProfile)
+	  {
+	    if ($tmp[1]==$profile_id) $result['DELIVERY'] = $arResult['NAME'] . ": " . $arProfile['TITLE'];
+	  }
+	}
+	//print_r($arVariants);
+	
+	$db_vals = CSaleOrderPropsValue::GetList(
+		array("SORT" => "ASC"),
+		array(
+			"ORDER_ID" => $ORDER_ID,
+		)
+	);
+	while ($arVal=$db_vals->GetNext()) { 
+		$ret[$arVal['ORDER_PROPS_ID']] = $arVal['VALUE'];
+	}
+	
+	
+	$db_props = CSaleOrderProps::GetList(
+	        array("SORT" => "ASC"),
+	        array(),
+	        false,
+	        false,
+	        array()
+	    );
+	while($props = $db_props->Fetch()) {
+		$id = $props['ID'];
+		$code = $props['CODE'];
+		$value = $ret[$id];
+		if ($arVariants[$id][$value]) $value = $arVariants[$id][$value];
+		$result["PROP_$code"] = $value;
+	}
+
+	if ($result['DELIVERY_ID']==3) {
+		$dlt = array("STREET","HOUSE","KOD_DOM","FLOOR","PORCH","ROOM","TYPE_ENTER");
+		foreach ($dlt as $v) $result["PROP_$v"]="";
+	}
+
+	return $result;
+}
+
+function getImgStyle($src,$h) {
+	$is = getimagesize($_SERVER['DOCUMENT_ROOT'].$src);
+	$height = floor(($is[1]/$is[0])*$h);
+	$ret = floor(($h-$height)/2)+4;
+	$ret2 = $h-$ret-$height + 3; $ret2=$ret2>0?$ret2:0; 
+	return " style=\"padding:{$ret}px 0 ".$ret2."px 0;\" ";
+}
+
+function pre($var, $die = false)
+{
+    global $USER;
+
+    if ($USER->IsAdmin()) {
+        echo '<pre>Дэбаг только для разработчиков<br>' . var_export($var, 1) . '</pre>';
+        if ($die) die;
+    }
+}
+
+function getSymbol($prop){
+
+    $arSym = array(
+        'DIAMETR' => ' см.',
+        'VOLUME' => ' л.'
+    );
+    if(isset($arSym[$prop['CODE']]))
+
+        return $prop['DISPLAY_VALUE'] . $arSym[$prop['CODE']];
+    else
+        return $prop['DISPLAY_VALUE'];
+
+}
+
+?>

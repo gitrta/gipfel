@@ -1,0 +1,18 @@
+.preview_text { margin-bottom:15px; }
+.news-date-time:before {
+content: "\f017";
+margin-right:6px;
+display: inline;
+speak: none;
+width:auto;
+height:auto;
+font-family:FontAwesome;
+font-size:14px;
+}
+.news-item {
+border-bottom: 1px dotted #777;
+padding-bottom: 15px;
+}
+.news-list {
+margin: 0 0 10px 10px;
+}
