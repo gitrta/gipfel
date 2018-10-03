@@ -1130,9 +1130,20 @@ if(!funcDefined("purchaseCounter")){
 				type: "POST",
 				data: {"ORDER_ID": order_id, "TYPE": type},
 				success: function(order){
+
+
+
 					var products = [];
+					var products_ga = [];
 					if(order.ITEMS){
 						for(var i in order.ITEMS){
+							products_ga.push({
+									'sku':order.ITEMS[i].ID,
+									'name': order.ITEMS[i].NAME,
+									'price': order.ITEMS[i].PRICE,
+									'category': order.ITEMS[i].CATEGORY,
+									'quantity': order.ITEMS[i].QUANTITY
+								});
 							products.push({
 								"id": order.ITEMS[i].ID,
 								"sku": order.ITEMS[i].ID,
@@ -1146,6 +1157,15 @@ if(!funcDefined("purchaseCounter")){
 					}
 					if(order.ID){
 						waitLayer(100, function() {
+							dataLayer.push({
+							   'transactionId': order.ID,
+							   'transactionAffiliation': order.COMMENTS,
+							   'transactionTotal': order.PRICE,
+							   'transactionTax': order.TAX_VALUE,
+							   'transactionShipping': order.PRICE_DELIVERY,
+							   'transactionProducts': products_ga
+							});
+
 							dataLayer.push({
 							    "ecommerce": d = {
 							    	"purchase": {
@@ -2030,7 +2050,7 @@ function activate_menu_block(block) {
 
 $(document).ready(function(){
 	$(".colored #header .catalog_menu ul.menu > li:last").addClass("last");
-  
+
   $(".menu_top_catalog_li")
     .mouseenter(function() {
       $(this).addClass('wait-active');
@@ -2040,7 +2060,7 @@ $(document).ready(function(){
       $(this).removeClass('wait-active').removeClass('active');
       $(this).parent().removeClass('hidded');
     });
-  
+
 	//ecommerce order
 	if(arOptimusOptions["PAGES"]["ORDER_PAGE"] && checkCounters()){
 		var arUrl = parseUrlQuery();
