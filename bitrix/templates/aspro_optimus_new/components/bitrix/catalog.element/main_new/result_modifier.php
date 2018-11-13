@@ -873,4 +873,11 @@ if(is_array($arParams["SECTION_TIZER"]) && $arParams["SECTION_TIZER"]){
 		$obCache->EndDataCache($arTizersData);
 	}
 	$arResult["TIZERS_ITEMS"]=$arTizersData;
-}?>
+}
+
+if($arResult["MORE_PHOTO"]){
+	$GLOBALS["SetOgImage"] = "https://".$_SERVER['HTTP_HOST'].$arResult["MORE_PHOTO"][0]["SRC"];
+}
+$GLOBALS["SetOgDescription"] = strip_tags($arResult["DETAIL_TEXT"]);
+
+?>

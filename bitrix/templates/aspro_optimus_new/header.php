@@ -4,7 +4,7 @@ if($GET["debug"] == "y"){
 }
 if($_SERVER['HTTP_HOST']=='gipfel.by'):
 Header( "HTTP/1.1 403 Restricted Content" );
-Header( "Location: https://gipfel.ru" ); 
+Header( "Location: https://gipfel.ru" );
 endif;
 
 IncludeTemplateLangFile(__FILE__);
@@ -16,13 +16,57 @@ $htmlClass = ($_REQUEST && isset($_REQUEST['print']) ? 'print' : false);
 <!DOCTYPE html>
 <!--<html xml:lang="<?=LANGUAGE_ID?>" lang="<?=LANGUAGE_ID?>" xmlns="https://www.w3.org/1999/xhtml" <?=($htmlClass ? 'class="'.$htmlClass.'"' : '')?>>-->
 
+
+<?php if($_SERVER['HTTP_HOST']=='gipfel.kz') { ?>
+
+<html lang="kk">
+
+<?php } else { ?>
+
 <html lang="ru">
+
+
+<?php } ?>
+
+
+<?php if($_SERVER['HTTP_HOST']=='gipfel.kz') {
+
+if($_SERVER['REQUEST_URI']=='/contacts/') {
+
+header("Location: /"); /* Redirect browser */
+
+
+ }
+
+
+
+} ?>
+
+
+
+
+
 <head>
 	<title><?$APPLICATION->ShowTitle()?></title>
 	<?$APPLICATION->ShowMeta("viewport");?>
 	<meta name="cmsmagazine" content="80ec8917da5ef485b2b56bb185de73b2" />
+	<meta property='og:type' content='website' />
+	<meta property='og:url' content='https://<?= $_SERVER['HTTP_HOST']?><?=$APPLICATION->GetCurPage()?>' />
+	<meta property='og:title' content='<?$APPLICATION->ShowTitle()?>' />
+	<meta property="og:site_name" content="Gipfel"/>
+	<link rel="canonical" href="https://<?= $_SERVER['HTTP_HOST']?><?=$APPLICATION->GetCurPage();?>">
+
+<?php if($_SERVER['HTTP_HOST']!='gipfel.kz') { ?>
+
 	<meta name="yandex-verification" content="993f7933fccbe131" />
+<?php } ?>
+
+
+
+
 	<?$APPLICATION->ShowMeta("HandheldFriendly");?>
+
+
 	<?$APPLICATION->ShowMeta("apple-mobile-web-app-capable", "yes");?>
 	<?$APPLICATION->ShowMeta("apple-mobile-web-app-status-bar-style");?>
 	<?$APPLICATION->ShowMeta("SKYPE_TOOLBAR");?>
@@ -39,6 +83,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-KV344BW');</script>
 <!-- End Google Tag Manager -->
+<meta name="google-site-verification" content="-Jo4kzt0i48tHCScenlx7tipWCUBm2PpohiVltbaPNw" />
 </head>
 <body id="main">
 <!-- Google Tag Manager (noscript) -->
@@ -46,7 +91,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager (noscript) -->
 
     <div id="mobile_checker"></div>
- <!--   <script type="text/javascript" language="javascript"> 
+ <!--   <script type="text/javascript" language="javascript">
       if ($('#mobile_checker').is(":visible")!=true) {
         var _lh_params = {"popup": false}; lh_clid="5835b505e694aa725ebaa1fb"; (function() { var lh = document.createElement('script'); lh.type = 'text/javascript'; lh.async = true; lh.src = ('https:' == document.location.protocol ? 'https://' : 'https://') + 'track.leadhit.io/track.js?ver=' + Math.floor(Date.now()/100000).toString(); var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lh, s); })();
       }
@@ -55,34 +100,34 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-	<? if($_SERVER['REQUEST_URI']=='/bitrix/urlrewrite.php') { 
+	<? if($_SERVER['REQUEST_URI']=='/bitrix/urlrewrite.php') {
 header('Location: /');
 exit;
-	} ?>	
+	} ?>
 
 
-	<? if($_SERVER['HTTP_HOST']=='www.gipfel.by') { 
+	<? if($_SERVER['HTTP_HOST']=='www.gipfel.by') {
 header('Location: https://gipfel.ru/');
 exit;
-	} ?>	
+	} ?>
 
 
-	<? if($_SERVER['REQUEST_URI']=='/company/news/') { 
+	<? if($_SERVER['REQUEST_URI']=='/company/news/') {
 header('Location: /news/');
 exit;
-	} ?>	
+	} ?>
 
 
-	<? 
+	<?
 
 
 $p = parse_url($_SERVER['REQUEST_URI']);
 $f = explode('/', $p['path']);
 
-	if($f[1] == 'company' && $f[2] == 'news') { 
+	if($f[1] == 'company' && $f[2] == 'news') {
 header('Location: /news/');
 exit;
-	} ?>	
+	} ?>
 
 
 
@@ -96,7 +141,7 @@ display: none !important;
 }
 </style>
 
-	<? } ?>	
+	<? } ?>
 
 
 		<div id="panel"><?$APPLICATION->ShowPanel();?></div>
@@ -128,10 +173,10 @@ display: none !important;
 											<span class="icons fa fa-phone"></span>
 											<span class="phone_text">
 												<?
-if ($GLOBALS["MCUR"]=='RUB') {$fff = 'phone.php';} 													
-if ($GLOBALS["MCUR"]=='KZT') {$fff = 'phonekz.php';} 
-if ($GLOBALS["MCUR"]=='BYN') {$fff = 'phoneby.php';} 
-if ($GLOBALS["MCUR"]=='UAH') {$fff = 'phoneua.php';} 
+if ($GLOBALS["MCUR"]=='RUB') {$fff = 'phone.php';}
+if ($GLOBALS["MCUR"]=='KZT') {$fff = 'phonekz.php';}
+if ($GLOBALS["MCUR"]=='BYN') {$fff = 'phoneby.php';}
+if ($GLOBALS["MCUR"]=='UAH') {$fff = 'phoneua.php';}
 
 													$APPLICATION->IncludeComponent("bitrix:main.include", ".default",
 													array(
@@ -191,13 +236,13 @@ if ($GLOBALS["MCUR"]=='UAH') {$fff = 'phoneua.php';}
 												"EDIT_TEMPLATE" => "standard.php"
 											),
 											false
-										);?>	
+										);?>
 									</div>
-									
+
 
 
 								</td>-->
-								<td  class="center_block">																	
+								<td  class="center_block">
 									<div class="search">
 										<?$APPLICATION->IncludeComponent("bitrix:main.include", ".default",
 											array(
@@ -211,14 +256,14 @@ if ($GLOBALS["MCUR"]=='UAH') {$fff = 'phoneua.php';}
 											false
 										);?>
 									</div>
-									<? 
+									<?
 										//$countries = array('RU'=>'Россия|gipfel.ru','KZ'=>'Казахстан|gipfel.kz','BY'=>'Белоруссия|gipfel.by','UAH'=>'Украина|gipfel.ua');
 										$countries = array('RU'=>'Россия|gipfel.ru','KZ'=>'Казахстан|gipfel.kz','UAH'=>'Украина|gipfel.ua');
 										//if(isset($_GET['geo'])):?>
 									<div class = "geo">
 										<select class="inputtext " required="" name="ygeo" value="" aria-required="true" >
 										<? foreach($countries as $key=>$country){ $p=explode('|',$country)?>
-											<option <? if ($key==$_SESSION['RR'] or $p[1]==$_SERVER['HTTP_HOST']) echo 'selected'; ?> value = "<? echo $key ?>"><? echo $p[0];?></option>	
+											<option <? if ($key==$_SESSION['RR'] or $p[1]==$_SERVER['HTTP_HOST']) echo 'selected'; ?> value = "<? echo $key ?>"><? echo $p[0];?></option>
 										<?	}?>
 										</select>
 										<script>
@@ -236,7 +281,7 @@ if ($GLOBALS["MCUR"]=='UAH') {$fff = 'phoneua.php';}
   }
 });
 
-										})	
+										})
 										</script>
 									</div>
 									<?// endif; ?>
@@ -268,7 +313,7 @@ if ($GLOBALS["MCUR"]=='UAH') {$fff = 'phoneua.php';}
 														"EDIT_TEMPLATE" => "standard.php"
 													),
 													false
-												);?>												
+												);?>
 											</div>
 										</div>
 									<?}else{?>
@@ -283,7 +328,7 @@ if ($GLOBALS["MCUR"]=='UAH') {$fff = 'phoneua.php';}
 													"EDIT_TEMPLATE" => "standard.php"
 												),
 												false
-											);?>											
+											);?>
 										</div>
 										<div class="middle_phone">
 											<div class="phones">
@@ -292,10 +337,10 @@ if ($GLOBALS["MCUR"]=='UAH') {$fff = 'phoneua.php';}
 														<span class="icons fa fa-phone"></span>
 														<span class="phone_text">
 															<?
-if ($GLOBALS["MCUR"]=='RUB') {$fff = 'phone.php';} 													
-if ($GLOBALS["MCUR"]=='KZT') {$fff = 'phonekz.php';} 
-if ($GLOBALS["MCUR"]=='BYN') {$fff = 'phoneby.php';} 
-if ($GLOBALS["MCUR"]=='UAH') {$fff = 'phoneua.php';} 
+if ($GLOBALS["MCUR"]=='RUB') {$fff = 'phone.php';}
+if ($GLOBALS["MCUR"]=='KZT') {$fff = 'phonekz.php';}
+if ($GLOBALS["MCUR"]=='BYN') {$fff = 'phoneby.php';}
+if ($GLOBALS["MCUR"]=='UAH') {$fff = 'phoneua.php';}
 
 																$APPLICATION->IncludeComponent("bitrix:main.include", ".default",
 																array(
@@ -349,7 +394,7 @@ if ($GLOBALS["MCUR"]=='UAH') {$fff = 'phoneua.php';}
 												"EDIT_TEMPLATE" => "standard.php"
 											),
 											false
-										);?>	
+										);?>
 									</div>
 								</td>
 
@@ -360,7 +405,7 @@ if ($GLOBALS["MCUR"]=='UAH') {$fff = 'phoneua.php';}
 						</table>
 					</div>
 					<div class="catalog_menu menu_<?=strToLower($TEMPLATE_OPTIONS["MENU_COLOR"]["CURRENT_VALUE"]);?>">
-						
+
 						<div class="wrapper_inner">
 						<a href="/">	<img class = "fixlogo" src = "<?=SITE_TEMPLATE_PATH ?>/images/whl.png"></a>
 							<div class="wrapper_middle_menu wrap_menu">
@@ -378,7 +423,7 @@ if ($GLOBALS["MCUR"]=='UAH') {$fff = 'phoneua.php';}
 											false
 										);?>
 								</div></li>
-								</ul>				
+								</ul>
 								<?/*<div class="catalog_menu_ext">
 									<?$APPLICATION->IncludeComponent("bitrix:main.include", ".default",
 										array(
@@ -426,7 +471,7 @@ if ($GLOBALS["MCUR"]=='UAH') {$fff = 'phoneua.php';}
 
 
 <?php if(!$_GET) { ?>
-	
+
 						<div class="search">
 										<?$APPLICATION->IncludeComponent("bitrix:main.include", ".default",
 											array(
@@ -451,7 +496,7 @@ if ($GLOBALS["MCUR"]=='UAH') {$fff = 'phoneua.php';}
 					</div>
 					</div>
 					</div>
-					
+
 				</header>
 			</div>
 			<div class="wraps" id="content">
@@ -469,7 +514,7 @@ if ($GLOBALS["MCUR"]=='UAH') {$fff = 'phoneua.php';}
 									"EDIT_TEMPLATE" => "standard.php"
 								),
 								false
-							);?>					
+							);?>
 
 							<?$APPLICATION->ShowViewContent('left_menu');?>
 							<?/*$APPLICATION->IncludeComponent("bitrix:main.include", ".default",
@@ -495,8 +540,8 @@ if ($GLOBALS["MCUR"]=='UAH') {$fff = 'phoneua.php';}
 								false
 							);*/ ?>
 							<?$APPLICATION->IncludeComponent(
-	"bitrix:main.include", 
-	".default", 
+	"bitrix:main.include",
+	".default",
 	array(
 		"COMPONENT_TEMPLATE" => ".default",
 		"PATH" => SITE_DIR."include/left_block/comp_news.php",
@@ -534,7 +579,6 @@ if ($GLOBALS["MCUR"]=='UAH') {$fff = 'phoneua.php';}
 										),
 										false
 									);?>
-									<h1 id="pagetitle"><?=$APPLICATION->ShowTitle(false);?></h1>								
+									<h1 id="pagetitle"><?=$APPLICATION->ShowTitle(false);?></h1>
 							<?endif;?>
 <?if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest") $APPLICATION->RestartBuffer();?>
-	

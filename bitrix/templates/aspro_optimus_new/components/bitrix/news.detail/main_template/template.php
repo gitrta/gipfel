@@ -11,22 +11,22 @@
 	<?endif;?>
 	<?if($arParams["DISPLAY_DATE"]!="N"):?>
 			<?if($arResult["PROPERTIES"][$arParams["PERIOD_PROPERTY"]]["VALUE"]):?>
-				<div class="news_date_time_detail date_small"><?=$arResult["PROPERTIES"][$arParams["PERIOD_PROPERTY"]]["VALUE"];?></div>	
+				<div class="news_date_time_detail date_small"><?=$arResult["PROPERTIES"][$arParams["PERIOD_PROPERTY"]]["VALUE"];?></div>
 			<?elseif($arResult["DISPLAY_ACTIVE_FROM"]):?>
-				<div class="news_date_time_detail date_small"><?=$arResult["DISPLAY_ACTIVE_FROM"]?></div>	
+				<div class="news_date_time_detail date_small"><?=$arResult["DISPLAY_ACTIVE_FROM"]?></div>
 			<?endif;?>
 	<?endif;?>
 
 	<?if ($arResult["PREVIEW_TEXT"]):?>
 		<div class="<?if ($left_side):?>right_side<?endif;?> margin preview_text"><?=$arResult["PREVIEW_TEXT"];?></div>
 	<?endif;?>
-	
-		
+
+
 	<?if ($arResult["DETAIL_TEXT"]):?>
 		<div class="detail_text <?=($arResult["DETAIL_PICTURE"] ? "wimg" : "");?>"><?=$arResult["DETAIL_TEXT"]?></div>
 	<?endif;?>
-	
-	
+
+
 	<?/*if($arParams["SHOW_PRICE"]=="Y" && $arResult["PROPERTIES"][$arParams["PRICE_PROPERTY"]]["VALUE"]):?>
 		<div class="price_block">
 			<div class="price"><?=GetMessage("SERVICE_PRICE")?> <?=$arResult["PROPERTIES"][$arParams["PRICE_PROPERTY"]]["VALUE"];?></div>
@@ -38,8 +38,8 @@
 		<div class="row galley">
 			<ul class="module-gallery-list">
 				<?
-					$files = $arResult["PROPERTIES"][$arParams["GALLERY_PROPERTY"]]["VALUE"];		
-					if(array_key_exists('SRC', $files)) 
+					$files = $arResult["PROPERTIES"][$arParams["GALLERY_PROPERTY"]]["VALUE"];
+					if(array_key_exists('SRC', $files))
 					{
 					   $files['SRC'] = '/' . substr($files['SRC'], 1);
 					   $files['ID'] = $arResult["PROPERTIES"][$arParams["GALLERY_PROPERTY"]]["VALUE"][0];
@@ -49,21 +49,42 @@
 				<?	foreach($files as $arFile):?>
 					<?
 						$img = CFile::ResizeImageGet($arFile, array('width'=>230, 'height'=>155), BX_RESIZE_IMAGE_EXACT, true);
-						
+
 						$img_big = CFile::ResizeImageGet($arFile, array('width'=>800, 'height'=>600), BX_RESIZE_IMAGE_PROPORTIONAL, true);
 						$img_big = $img_big['src'];
 					?>
 					<li class="item_block">
 						<a href="<?=$img_big;?>" class="fancy" data-fancybox-group="gallery">
 							<img src="<?=$img["src"];?>" alt="<?=$arResult["NAME"];?>" title="<?=$arResult["NAME"];?>" />
-						</a>				  
+						</a>
 					</li>
 				<?endforeach;?>
 			</ul>
 			<div class="clear"></div>
 		</div>
 	<?}?>
+	<!-- related -->
 
+		<?
+			if(sizeof($arResult["RELATED"])){
+				?>
+				<div class="related_articles">
+				<h3>Возможно, вам будет интересно</h3><?
+				foreach($arResult["RELATED"] as $rArticle){
+					$img = CFile::ResizeImageGet($rArticle["DETAIL_PICTURE"], array( "width" => 270, "height" => 185 ), BX_RESIZE_IMAGE_PROPORTIONAL, true, array() );
+
+
+					//print_r($rArticle);
+					?>
+					<div class="related_article">
+						<a href="<?=$rArticle["DETAIL_PAGE_URL"];?>" class="image_link"><img src="<?=$img["src"]?>" alt="<?=($rArticle["DETAIL_PICTURE"]["ALT"] ? $rArticle["DETAIL_PICTURE"]["ALT"] : $rArticle["NAME"])?>" title="<?=($rArticle["DETAIL_PICTURE"]["TITLE"] ? $rArticle["DETAIL_PICTURE"]["TITLE"] : $rArticle["NAME"])?>"/></a>
+						<a href="<?=$rArticle["DETAIL_PAGE_URL"];?>"><?=$rArticle["NAME"];?></a>
+					</div>
+					<?
+				}
+				?></div><?
+			}
+		?>
 
 	<?/*if ($arParams["SHOW_FAQ_BLOCK"]=="Y"):?>
 		<div class="ask_big_block">

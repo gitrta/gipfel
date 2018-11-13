@@ -19,7 +19,7 @@ $APPLICATION->SetTitle("Статьи");
 		"SORT_BY2" => "ID",
 		"SORT_ORDER2" => "ASC",
 		"CHECK_DATES" => "Y",
-		"SEF_MODE" => "N",
+		"SEF_MODE" => "Y",
 		"SEF_FOLDER" => "/articles/",
 		"AJAX_MODE" => "N",
 		"AJAX_OPTION_JUMP" => "N",
@@ -56,8 +56,9 @@ $APPLICATION->SetTitle("Статьи");
 			1 => "",
 		),
 		"DETAIL_PROPERTY_CODE" => array(
-			0 => "",
+			0 => "LINK",
 			1 => "",
+			2 => "",
 		),
 		"DETAIL_DISPLAY_TOP_PAGER" => "N",
 		"DETAIL_DISPLAY_BOTTOM_PAGER" => "Y",
@@ -97,9 +98,10 @@ $APPLICATION->SetTitle("Статьи");
 		"SHOW_LINKED_PRODUCTS" => "N",
 		"PRICE_PROPERTY" => "PRICE",
 		"SHOW_PRICE" => "N",
-		"VARIABLE_ALIASES" => array(
-			"SECTION_ID" => "SECTION_ID",
-			"ELEMENT_ID" => "ELEMENT_ID",
+		"SEF_URL_TEMPLATES" => array(
+			"news" => "",
+			"section" => "",
+			"detail" => "#ELEMENT_CODE#/",
 		)
 	),
 	false

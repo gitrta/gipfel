@@ -15,8 +15,8 @@
                 $strImg = '';
                 if(intval($arChildItem["PARAMS"]["PICTURE"])>0){
                   $img = CFile::ResizeImageGet($arChildItem["PARAMS"]["PICTURE"], array('width'=>100, 'height'=>100),
-                  BX_RESIZE_IMAGE_PROPORTIONAL, false); 
-                  $strImg = '<a href = "'.$arChildItem["LINK"].'"><img alt="" src="'.$img['src'].'" /></a>';
+                  BX_RESIZE_IMAGE_PROPORTIONAL, false);
+                  $strImg = '<a href = "'.$arChildItem["LINK"].'"><img alt="'.$arChildItem["TEXT"].'" src="'.$img['src'].'" /></a>';
                 }
                 ?>
               	<li class="<?=($arChildItem["CHILD"] ? "has-child" : "");?> <?if($arChildItem["SELECTED"]){?> current <?}?>">

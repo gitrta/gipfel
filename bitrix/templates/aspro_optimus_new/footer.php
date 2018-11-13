@@ -28,7 +28,52 @@
 				<?endif;?>
 				<div class="wrapper_inner">
 					<div class="footer_bottom_inner">
-						<div class="left_block">
+
+<?php if($_SERVER['HTTP_HOST']=='gipfel.kz') {  ?>
+
+
+					<div class="left_block">
+							<span class="pay_system_icons">
+	<i title="MasterCard" class="mastercard"></i>
+<i title="Maestro" class="maestro"></i>
+<i title="Visa" class="visa"></i>
+<i title="МИР" class="mir"></i>
+
+    
+
+<p style="
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #1d2029 !important;
+    margin-bottom: 2px;
+">Доставка по KZ:</p>
+<ul class="wedel">
+    <li>СДЭК</li>
+</ul>
+
+
+
+
+
+	
+
+
+
+
+<!--<i title="Yandex" class="yandex_money"></i>
+<i title="WebMoney" class="webmoney"></i>
+<i title="Qiwi" class="qiwi"></i>--></span>
+<div class="copyright">
+	2018
+
+ © GIPFEL.KZ</div>							
+							<div id="bx-composite-banner"></div>
+						</div>
+
+<?php } else { ?>
+
+
+	<div class="left_block">
 							<?$APPLICATION->IncludeComponent("bitrix:main.include", ".default",
 								array(
 									"COMPONENT_TEMPLATE" => ".default",
@@ -42,6 +87,12 @@
 							);?>							
 							<div id="bx-composite-banner"></div>
 						</div>
+
+
+
+<?php	} ?>
+
+
 						<div class="right_block">
 							<div class="middle">
 								<div class="rows_block">

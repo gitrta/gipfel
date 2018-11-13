@@ -6,10 +6,10 @@ For example:
 /usr/bin/perl
 /usr/bin/env python
 */
-$_SERVER["DOCUMENT_ROOT"] = "/home/u474277/gipfel.ru/www"; // replace /home/u474277/gipfel.ru/www to real document root path
+$_SERVER["DOCUMENT_ROOT"] = "/home/r/ravilatb/ravilatb.beget.tech/public_html"; // replace /home/r/ravilatb/ravilatb.beget.tech/public_html to real document root path
 $DOCUMENT_ROOT = $_SERVER["DOCUMENT_ROOT"];
 
-$siteID = '#SITE_ID#'; // replace #SITE_ID# to your real site ID - need for language ID
+$siteID = 's1'; // replace s1 to your real site ID - need for language ID
 
 define("NO_KEEP_STATISTIC", true);
 define("NOT_CHECK_PERMISSIONS",true);

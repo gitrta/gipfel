@@ -1,1 +1,4 @@
-<?=date("Y")?> &copy; GIPFEL.RU
+<?=date("Y")?>
+
+
+ © GIPFEL.RU

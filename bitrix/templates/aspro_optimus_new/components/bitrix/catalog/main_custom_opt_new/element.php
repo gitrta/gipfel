@@ -196,7 +196,7 @@ if ($arNavParams){
 	$arAdditionalData['NAV_CHAIN'] = $APPLICATION->GetNavChain($arNavParams[0], $arNavParams[1], $arNavParams[2], $arNavParams[3], $arNavParams[4]);
 }
 ?>
-<script type="text/javascript">	
+<script type="text/javascript">
 	BX.addCustomEvent(window, "onAjaxSuccess", function(){
 		var arAjaxPageData = <?=CUtil::PhpToJSObject($arAdditionalData);?>;
 		if (arAjaxPageData.TITLE)
@@ -206,8 +206,9 @@ if ($arNavParams){
 		if (arAjaxPageData.NAV_CHAIN)
 			BX.ajax.UpdatePageNavChain(arAjaxPageData.NAV_CHAIN);
 		// top.BX.ajax.UpdatePageData(arAjaxPageData);
-	});	
+	});
 </script>
+<!-- some test main_custom_opt_new -->
 <?/*fix title after ajax form end*/?>
 
 <?$arAllValues=$arSimilar=$arAccessories=array();
@@ -405,14 +406,14 @@ if($arAccessories){
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			
+
 			$('.tab_slider_wrapp.<?=$class_block;?> .tabs > li').first().addClass('cur');
 			$('.tab_slider_wrapp.<?=$class_block;?> .slider_navigation > li').first().addClass('cur');
 			$('.tab_slider_wrapp.<?=$class_block;?> .tabs_content > li').first().addClass('cur');
-			
+
 			var flexsliderItemWidth = 220;
 			var flexsliderItemMargin = 12;
-			
+
 			var sliderWidth = $('.tab_slider_wrapp.<?=$class_block;?>').outerWidth();
 			var flexsliderMinItems = Math.floor(sliderWidth / (flexsliderItemWidth + flexsliderItemMargin));
 			$('.tab_slider_wrapp.<?=$class_block;?> .tabs_content > li.cur').flexslider({
@@ -423,18 +424,18 @@ if($arAccessories){
 				directionNav: true,
 				controlNav: false,
 				pauseOnHover: true,
-				animationLoop: true, 
+				animationLoop: true,
 				itemWidth: flexsliderItemWidth,
-				itemMargin: flexsliderItemMargin, 
+				itemMargin: flexsliderItemMargin,
 				minItems: flexsliderMinItems,
 				controlsContainer: '.tabs_slider_navigation.cur',
 				start: function(slider){
 					slider.find('li').css('opacity', 1);
 				}
 			});
-			
+
 			$('.tab_slider_wrapp.<?=$class_block;?> .tabs > li').on('click', function(){
-				var sliderIndex = $(this).index();				
+				var sliderIndex = $(this).index();
 				if(!$('.tab_slider_wrapp.<?=$class_block;?> .tabs_content > li.cur .flex-viewport').length){
 					$('.tab_slider_wrapp.<?=$class_block;?> .tabs_content > li.cur').flexslider({
 						animation: 'slide',
@@ -444,9 +445,9 @@ if($arAccessories){
 						directionNav: true,
 						controlNav: false,
 						pauseOnHover: true,
-						animationLoop: true, 
+						animationLoop: true,
 						itemWidth: flexsliderItemWidth,
-						itemMargin: flexsliderItemMargin, 
+						itemMargin: flexsliderItemMargin,
 						minItems: flexsliderMinItems,
 						controlsContainer: '.tabs_slider_navigation.cur',
 					});

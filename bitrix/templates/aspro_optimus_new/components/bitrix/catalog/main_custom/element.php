@@ -202,7 +202,7 @@ if ($arNavParams){
 	$arAdditionalData['NAV_CHAIN'] = $APPLICATION->GetNavChain($arNavParams[0], $arNavParams[1], $arNavParams[2], $arNavParams[3], $arNavParams[4]);
 }
 ?>
-<script type="text/javascript">	
+<script type="text/javascript">
 	BX.addCustomEvent(window, "onAjaxSuccess", function(){
 		var arAjaxPageData = <?=CUtil::PhpToJSObject($arAdditionalData);?>;
 		if (arAjaxPageData.TITLE)
@@ -212,10 +212,14 @@ if ($arNavParams){
 		if (arAjaxPageData.NAV_CHAIN)
 			BX.ajax.UpdatePageNavChain(arAjaxPageData.NAV_CHAIN);
 		// top.BX.ajax.UpdatePageData(arAjaxPageData);
-	});	
+	});
 </script>
 <?/*fix title after ajax form end*/?>
-
+<!-- some test main_custom
+<?
+//print_r($arParams);
+?>
+-->
 <?$arAllValues=$arSimilar=$arAccessories=array();
 /*similar goods*/
 $arExpValues=COptimusCache::CIBlockElement_GetProperty($arParams["IBLOCK_ID"], $ElementID, array("CACHE" => array("TAG" =>COptimusCache::GetIBlockCacheTag($arParams["IBLOCK_ID"]))), array("CODE" => "EXPANDABLES"));
@@ -242,30 +246,184 @@ if($arAccessories){
 	if(ModuleManager::isModuleInstalled("sale") && (!isset($arParams['USE_BIG_DATA']) || $arParams['USE_BIG_DATA'] != 'N')){
 		$arTab["RECOMENDATION"]=GetMessage("RECOMENDATION_TITLE");
 	}?>
-	
+	<div class="bottom_slider specials tab_slider_wrapp <?=$class_block;?>">
+		<div class="top_blocks">
+			<ul class="tabs">
+				<?$i=1;
+				foreach($arTab as $code=>$title):?>
+					<li data-code="<?=$code?>" <?=($code=="RECOMENDATION" ? "style='display:none;'" : "" );?> <?=($i==1 ? "class='cur'" : "")?>><span><?=$title;?></span></li>
+					<?$i++;?>
+				<?endforeach;?>
+				<li class="stretch"></li>
+			</ul>
+			<ul class="slider_navigation top custom_flex border">
+				<?$i=1;
+				foreach($arTab as $code=>$title):?>
+					<li class="tabs_slider_navigation <?=$code?>_nav <?=($i==1 ? "cur" : "")?>" data-code="<?=$code?>"></li>
+					<?$i++;?>
+				<?endforeach;?>
+			</ul>
+		</div>
+		<?$disply_elements=($arParams["DISPLAY_ELEMENT_SLIDER"] ? $arParams["DISPLAY_ELEMENT_SLIDER"] : 10);?>
+		<ul class="tabs_content">
+			<?foreach($arTab as $code=>$title){?>
+				<li class="tab <?=$code?>_wrapp" data-code="<?=$code?>">
+					<?if($code=="RECOMENDATION"){?>
+						<?
+						$GLOBALS["CATALOG_CURRENT_ELEMENT_ID"] = $ElementID;
+						?>
+						<?$APPLICATION->IncludeComponent("bitrix:catalog.bigdata.products", "main_new", array(
+							"LINE_ELEMENT_COUNT" => 5,
+							"TEMPLATE_THEME" => (isset($arParams['TEMPLATE_THEME']) ? $arParams['TEMPLATE_THEME'] : ''),
+							"DETAIL_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["element"],
+							"BASKET_URL" => $arParams["BASKET_URL"],
+							"ACTION_VARIABLE" => (!empty($arParams["ACTION_VARIABLE"]) ? $arParams["ACTION_VARIABLE"] : "action")."_cbdp",
+							"PRODUCT_ID_VARIABLE" => $arParams["PRODUCT_ID_VARIABLE"],
+							"PRODUCT_QUANTITY_VARIABLE" => $arParams["PRODUCT_QUANTITY_VARIABLE"],
+							"ADD_PROPERTIES_TO_BASKET" => "N",
+							"PRODUCT_PROPS_VARIABLE" => $arParams["PRODUCT_PROPS_VARIABLE"],
+							"PARTIAL_PRODUCT_PROPERTIES" => (isset($arParams["PARTIAL_PRODUCT_PROPERTIES"]) ? $arParams["PARTIAL_PRODUCT_PROPERTIES"] : ''),
+							"SHOW_OLD_PRICE" => $arParams['SHOW_OLD_PRICE'],
+							"SHOW_DISCOUNT_PERCENT" => $arParams['SHOW_DISCOUNT_PERCENT'],
+							"PRICE_CODE" => $arParams["PRICE_CODE"],
+							"SHOW_PRICE_COUNT" => $arParams["SHOW_PRICE_COUNT"],
+							"PRODUCT_SUBSCRIPTION" => $arParams['PRODUCT_SUBSCRIPTION'],
+							"PRICE_VAT_INCLUDE" => $arParams["PRICE_VAT_INCLUDE"],
+							"USE_PRODUCT_QUANTITY" => $arParams['USE_PRODUCT_QUANTITY'],
+							"SHOW_NAME" => "Y",
+							"SHOW_IMAGE" => "Y",
+							"SHOW_MEASURE" => $arParams["SHOW_MEASURE"],
+							"SHOW_RATING" => $arParams["SHOW_RATING"],
+							"MESS_BTN_BUY" => $arParams['MESS_BTN_BUY'],
+							"MESS_BTN_DETAIL" => $arParams['MESS_BTN_DETAIL'],
+							"MESS_BTN_SUBSCRIBE" => $arParams['MESS_BTN_SUBSCRIBE'],
+							"MESS_NOT_AVAILABLE" => $arParams['MESS_NOT_AVAILABLE'],
+							"PAGE_ELEMENT_COUNT" => $disply_elements,
+							"SHOW_FROM_SECTION" => "N",
+							"IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
+							"IBLOCK_ID" => $arParams["IBLOCK_ID"],
+							"SALE_STIKER" => $arParams["SALE_STIKER"],
+							"DEPTH" => "2",
+							"CACHE_TYPE" => $arParams["CACHE_TYPE"],
+							"CACHE_TIME" => $arParams["CACHE_TIME"],
+							"CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
+							"SHOW_PRODUCTS_".$arParams["IBLOCK_ID"] => "Y",
+							"ADDITIONAL_PICT_PROP_".$arParams["IBLOCK_ID"] => $arParams['ADD_PICT_PROP'],
+							"LABEL_PROP_".$arParams["IBLOCK_ID"] => "-",
+							"HIDE_NOT_AVAILABLE" => $arParams["HIDE_NOT_AVAILABLE"],
+							"CONVERT_CURRENCY" => $arParams["CONVERT_CURRENCY"],
+							"CURRENCY_ID" => $arParams["CURRENCY_ID"],
+							"SECTION_ID" => $arResult["VARIABLES"]["SECTION_ID"],
+							"SECTION_CODE" => $arResult["VARIABLES"]["SECTION_CODE"],
+							"SECTION_ELEMENT_ID" => $arResult["VARIABLES"]["SECTION_ID"],
+							"SECTION_ELEMENT_CODE" => $arResult["VARIABLES"]["SECTION_CODE"],
+							"ID" => $ElementID,
+							"PROPERTY_CODE_".$arParams["IBLOCK_ID"] => $arParams["LIST_PROPERTY_CODE"],
+							"CART_PROPERTIES_".$arParams["IBLOCK_ID"] => $arParams["PRODUCT_PROPERTIES"],
+							"RCM_TYPE" => (isset($arParams['BIG_DATA_RCM_TYPE']) ? $arParams['BIG_DATA_RCM_TYPE'] : ''),
+							"DISPLAY_WISH_BUTTONS" => $arParams["DISPLAY_WISH_BUTTONS"],
+							"DISPLAY_COMPARE" => $arParams["USE_COMPARE"],
+							"OFFERS_LIMIT" => $arParams["LIST_OFFERS_LIMIT"],
+							),
+							false,
+							array("HIDE_ICONS" => "Y")
+						);
+						?>
+					<?}else{?>
+						<ul class="tabs_slider <?=$code?>_slides wr">
+							<?$GLOBALS['arrFilter'.$code] = array( "ID" => $arAllValues[$code] );?>
+							<?$APPLICATION->IncludeComponent(
+								"bitrix:catalog.top",
+								"main_new",
+								array(
+									"TITLE_BLOCK" => $arParams["SECTION_TOP_BLOCK_TITLE"],
+									"IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
+									"IBLOCK_ID" => $arParams["IBLOCK_ID"],
+									"SALE_STIKER" => $arParams["SALE_STIKER"],
+									"SHOW_RATING" => $arParams["SHOW_RATING"],
+									"FILTER_NAME" => 'arrFilter'.$code,
+									"ELEMENT_SORT_FIELD" => $arParams["ELEMENT_SORT_FIELD"],
+									"ELEMENT_SORT_ORDER" => $arParams["ELEMENT_SORT_ORDER"],
+									"ELEMENT_SORT_FIELD2" => $arParams["ELEMENT_SORT_FIELD2"],
+									"ELEMENT_SORT_ORDER2" => $arParams["ELEMENT_SORT_ORDER2"],
+									"SECTION_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["section"],
+									"DETAIL_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["element"],
+									"BASKET_URL" => $arParams["BASKET_URL"],
+									"ACTION_VARIABLE" => $arParams["ACTION_VARIABLE"],
+									"PRODUCT_ID_VARIABLE" => $arParams["PRODUCT_ID_VARIABLE"],
+									"SECTION_ID_VARIABLE" => $arParams["SECTION_ID_VARIABLE"],
+									"PRODUCT_QUANTITY_VARIABLE" => $arParams["PRODUCT_QUANTITY_VARIABLE"],
+									"PRODUCT_PROPS_VARIABLE" => $arParams["PRODUCT_PROPS_VARIABLE"],
+									"DISPLAY_COMPARE" => $arParams["USE_COMPARE"],
+									"DISPLAY_WISH_BUTTONS" => $arParams["DISPLAY_WISH_BUTTONS"],
+									"ELEMENT_COUNT" => $disply_elements,
+									"SHOW_MEASURE" => $arParams["SHOW_MEASURE"],
+									"LINE_ELEMENT_COUNT" => $arParams["TOP_LINE_ELEMENT_COUNT"],
+									"PROPERTY_CODE" => $arParams["DETAIL_PROPERTY_CODE"],
+									"PRICE_CODE" => $arParams["PRICE_CODE"],
+									"USE_PRICE_COUNT" => $arParams["USE_PRICE_COUNT"],
+									"SHOW_PRICE_COUNT" => $arParams["SHOW_PRICE_COUNT"],
+									"PRICE_VAT_INCLUDE" => $arParams["PRICE_VAT_INCLUDE"],
+									"PRICE_VAT_SHOW_VALUE" => $arParams["PRICE_VAT_SHOW_VALUE"],
+									"USE_PRODUCT_QUANTITY" => $arParams['USE_PRODUCT_QUANTITY'],
+									"ADD_PROPERTIES_TO_BASKET" => (isset($arParams["ADD_PROPERTIES_TO_BASKET"]) ? $arParams["ADD_PROPERTIES_TO_BASKET"] : ''),
+									"PARTIAL_PRODUCT_PROPERTIES" => (isset($arParams["PARTIAL_PRODUCT_PROPERTIES"]) ? $arParams["PARTIAL_PRODUCT_PROPERTIES"] : ''),
+									"PRODUCT_PROPERTIES" => $arParams["PRODUCT_PROPERTIES"],
+									"CACHE_TYPE" => $arParams["CACHE_TYPE"],
+									"CACHE_TIME" => $arParams["CACHE_TIME"],
+									"CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
+									"CACHE_FILTER" => $arParams["CACHE_FILTER"],
+									"OFFERS_CART_PROPERTIES" => $arParams["OFFERS_CART_PROPERTIES"],
+									"OFFERS_FIELD_CODE" => $arParams["LIST_OFFERS_FIELD_CODE"],
+									"OFFERS_PROPERTY_CODE" => $arParams["OFFERS_PROPERTY_CODE"],
+									"OFFERS_SORT_FIELD" => $arParams["OFFERS_SORT_FIELD"],
+									"OFFERS_SORT_ORDER" => $arParams["OFFERS_SORT_ORDER"],
+									"OFFERS_SORT_FIELD2" => $arParams["OFFERS_SORT_FIELD2"],
+									"OFFERS_SORT_ORDER2" => $arParams["OFFERS_SORT_ORDER2"],
+									"OFFERS_LIMIT" => $arParams["LIST_OFFERS_LIMIT"],
+									'CONVERT_CURRENCY' => $arParams['CONVERT_CURRENCY'],
+									'CURRENCY_ID' => $arParams['CURRENCY_ID'],
+									'HIDE_NOT_AVAILABLE' => $arParams['HIDE_NOT_AVAILABLE'],
+									'VIEW_MODE' => (isset($arParams['TOP_VIEW_MODE']) ? $arParams['TOP_VIEW_MODE'] : ''),
+									'ROTATE_TIMER' => (isset($arParams['TOP_ROTATE_TIMER']) ? $arParams['TOP_ROTATE_TIMER'] : ''),
+									'TEMPLATE_THEME' => (isset($arParams['TEMPLATE_THEME']) ? $arParams['TEMPLATE_THEME'] : ''),
+									'LABEL_PROP' => $arParams['LABEL_PROP'],
+									'ADD_PICT_PROP' => $arParams['ADD_PICT_PROP'],
+									'PRODUCT_DISPLAY_MODE' => $arParams['PRODUCT_DISPLAY_MODE'],
 
-
-
-
-
-
-
-
-
-
-
-
+									'OFFER_ADD_PICT_PROP' => $arParams['OFFER_ADD_PICT_PROP'],
+									'OFFER_TREE_PROPS' => $arParams['OFFER_TREE_PROPS'],
+									'PRODUCT_SUBSCRIPTION' => $arParams['PRODUCT_SUBSCRIPTION'],
+									'SHOW_DISCOUNT_PERCENT' => $arParams['SHOW_DISCOUNT_PERCENT'],
+									'SHOW_OLD_PRICE' => $arParams['SHOW_OLD_PRICE'],
+									'MESS_BTN_BUY' => $arParams['MESS_BTN_BUY'],
+									'MESS_BTN_ADD_TO_BASKET' => $arParams['MESS_BTN_ADD_TO_BASKET'],
+									'MESS_BTN_SUBSCRIBE' => $arParams['MESS_BTN_SUBSCRIBE'],
+									'MESS_BTN_DETAIL' => $arParams['MESS_BTN_DETAIL'],
+									'MESS_NOT_AVAILABLE' => $arParams['MESS_NOT_AVAILABLE'],
+									'ADD_TO_BASKET_ACTION' => $basketAction,
+									'SHOW_CLOSE_POPUP' => isset($arParams['COMMON_SHOW_CLOSE_POPUP']) ? $arParams['COMMON_SHOW_CLOSE_POPUP'] : '',
+									'COMPARE_PATH' => $arResult['FOLDER'].$arResult['URL_TEMPLATES']['compare'],
+								),
+								false, array("HIDE_ICONS"=>"Y")
+							);?>
+						</ul>
+					<?}?>
+				</li>
+			<?}?>
+		</ul>
+	</div>
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			
+
 			$('.tab_slider_wrapp.<?=$class_block;?> .tabs > li').first().addClass('cur');
 			$('.tab_slider_wrapp.<?=$class_block;?> .slider_navigation > li').first().addClass('cur');
 			$('.tab_slider_wrapp.<?=$class_block;?> .tabs_content > li').first().addClass('cur');
-			
+
 			var flexsliderItemWidth = 220;
 			var flexsliderItemMargin = 12;
-			
+
 			var sliderWidth = $('.tab_slider_wrapp.<?=$class_block;?>').outerWidth();
 			var flexsliderMinItems = Math.floor(sliderWidth / (flexsliderItemWidth + flexsliderItemMargin));
 			$('.tab_slider_wrapp.<?=$class_block;?> .tabs_content > li.cur').flexslider({
@@ -276,18 +434,18 @@ if($arAccessories){
 				directionNav: true,
 				controlNav: false,
 				pauseOnHover: true,
-				animationLoop: true, 
+				animationLoop: true,
 				itemWidth: flexsliderItemWidth,
-				itemMargin: flexsliderItemMargin, 
+				itemMargin: flexsliderItemMargin,
 				minItems: flexsliderMinItems,
 				controlsContainer: '.tabs_slider_navigation.cur',
 				start: function(slider){
 					slider.find('li').css('opacity', 1);
 				}
 			});
-			
+
 			$('.tab_slider_wrapp.<?=$class_block;?> .tabs > li').on('click', function(){
-				var sliderIndex = $(this).index();				
+				var sliderIndex = $(this).index();
 				if(!$('.tab_slider_wrapp.<?=$class_block;?> .tabs_content > li.cur .flex-viewport').length){
 					$('.tab_slider_wrapp.<?=$class_block;?> .tabs_content > li.cur').flexslider({
 						animation: 'slide',
@@ -297,9 +455,9 @@ if($arAccessories){
 						directionNav: true,
 						controlNav: false,
 						pauseOnHover: true,
-						animationLoop: true, 
+						animationLoop: true,
 						itemWidth: flexsliderItemWidth,
-						itemMargin: flexsliderItemMargin, 
+						itemMargin: flexsliderItemMargin,
 						minItems: flexsliderMinItems,
 						controlsContainer: '.tabs_slider_navigation.cur',
 					});

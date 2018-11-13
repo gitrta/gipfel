@@ -4,6 +4,7 @@ $isAjax = ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST["ajax_action"]) 
 <?if ($isAjax){
 	$APPLICATION->RestartBuffer();
 }?>
+
 <div class="bx_sort_container">
 	<ul class="tabs-head">
 		<li <?=(!$arResult["DIFFERENT"] ? 'class="current"' : '');?>>
@@ -118,7 +119,7 @@ $isAjax = ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST["ajax_action"]) 
 	<?}?>
 	<?$arUnvisible=array("NAME", "PREVIEW_PICTURE", "DETAIL_PICTURE");?>
 		<div class="prop_title_table"></div>
-		
+
 		<div class="frame props">
 			<div class="wraps">
 				<table class="data_table_props compare_view">
@@ -150,7 +151,7 @@ $isAjax = ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST["ajax_action"]) 
 										<?foreach($arResult["ITEMS"] as $arElement){?>
 											<td valign="top">
 												<?=$arElement["FIELDS"][$code];?>
-												
+
 											</td>
 										<?}
 										unset($arElement);?>
